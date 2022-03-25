@@ -13,13 +13,13 @@ import com.juned.githubuserssearch.databinding.ActivitySplashScreenBinding
 class SplashScreenActivity : AppCompatActivity() {
 
     private var _binding: ActivitySplashScreenBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         _binding = ActivitySplashScreenBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(binding?.root)
 
         val actionBar: ActionBar? = supportActionBar
         actionBar?.hide()

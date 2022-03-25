@@ -44,5 +44,6 @@
     <string name="not_found">Not Found</string>
     <string name="detail_repositories"> %s repositories</string>
     <string name="success_search"> "Berhasi menampilkan %d data"</string>
+    <string name="splash_screen_image">splash screen</string>
 
 </resources>

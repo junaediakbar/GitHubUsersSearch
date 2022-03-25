@@ -25,14 +25,14 @@ import com.juned.githubuserssearch.viewmodel.MainViewModel
 class MainActivity : AppCompatActivity() {
 
     private var _binding: ActivityMainBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding
 
     private val mainViewModel by viewModels<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(binding?.root)
         showRecyclerList()
 
         mainViewModel.apply {
@@ -81,13 +81,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showErrorSnackBar(text: String) {
-        Snackbar.make(binding.root, getString(R.string.error_message)+ text, Snackbar.LENGTH_SHORT)
-            .setAction(R.string.try_again) { mainViewModel.searchUsers("") }.setDuration(10000)
-            .show()
+        binding?.root?.let {
+            Snackbar.make(it, getString(R.string.error_message)+ text, Snackbar.LENGTH_SHORT)
+                .setAction(R.string.try_again) { mainViewModel.searchUsers("") }.setDuration(10000)
+                .show()
+        }
     }
     private fun showSnackBar(text: String) {
-        Snackbar.make(binding.root,text, Snackbar.LENGTH_SHORT)
-            .show()
+        binding?.let {
+            Snackbar.make(it.root,text, Snackbar.LENGTH_SHORT)
+                .show()
+        }
     }
 
     private fun setUsersData(users: List<ListUsersResponse>) {
@@ -96,7 +100,7 @@ class MainActivity : AppCompatActivity() {
             listUser.add(User(login = user.login,avatarUrl = user.avatarUrl))
         }
         val adapter = UserAdapter(listUser)
-        binding.rvUser.adapter = adapter
+        binding?.rvUser?.adapter = adapter
         adapter.setOnItemClickCallback(object : UserAdapter.OnItemClickCallback {
             override fun onItemClicked(data: User) {
                 val intentToDetail = Intent(this@MainActivity, DetailUserActivity::class.java)
@@ -110,19 +114,19 @@ class MainActivity : AppCompatActivity() {
 
     private fun showRecyclerList() {
         if (applicationContext.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            binding.rvUser.layoutManager = GridLayoutManager(this,2)
+            binding?.rvUser?.layoutManager = GridLayoutManager(this,2)
         }
        else{
-            binding.rvUser.layoutManager = LinearLayoutManager(this)
+            binding?.rvUser?.layoutManager = LinearLayoutManager(this)
         }
-        binding.rvUser.setHasFixedSize(true)
+        binding?.rvUser?.setHasFixedSize(true)
     }
 
     private fun showLoading(isLoading: Boolean) {
         if (isLoading) {
-            binding.progressBar.visibility = visibility(true)
+            binding?.progressBar?.visibility = visibility(true)
         } else {
-            binding.progressBar.visibility = visibility(false)
+            binding?.progressBar?.visibility = visibility(false)
         }
     }
 

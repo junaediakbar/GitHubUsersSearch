@@ -20,25 +20,25 @@ import com.juned.githubuserssearch.viewmodel.DetailUserViewModel
 class DetailUserActivity : AppCompatActivity() {
 
     private var _binding: ActivityDetailUserBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding
 
     private val detailUserViewModel by viewModels<DetailUserViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityDetailUserBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(binding?.root)
 
         val user = intent.getParcelableExtra<User>(EXTRA_USER) as User
 
         detailUserViewModel.apply {
             getUserDetails(user.login.toString())
 
-            userDetails.observe(this@DetailUserActivity) { user->
+            userDetails.observe(this@DetailUserActivity) { user ->
                 setUserDetailData(user)
             }
 
-            isLoading.observe(this@DetailUserActivity) { checkLoading->
+            isLoading.observe(this@DetailUserActivity) { checkLoading ->
                 showLoading(checkLoading)
             }
 
@@ -49,55 +49,64 @@ class DetailUserActivity : AppCompatActivity() {
             }
         }
 
-        val viewPager = binding.followViewPager
-        viewPager.adapter = SectionsPagerAdapter(this@DetailUserActivity, user.login.toString())
+        val viewPager = binding?.followViewPager
+        viewPager?.adapter = SectionsPagerAdapter(this@DetailUserActivity, user.login.toString())
 
-        val tabs = binding.tabs
-        TabLayoutMediator(tabs, viewPager) { tab, position ->
-            tab.text = getString(TAB_TITLES[position])
-        }.attach()
-        supportActionBar?.elevation= 0f
+        val tabs = binding?.tabs
+        if (tabs != null && viewPager != null) {
+            TabLayoutMediator(tabs, viewPager) { tab, position ->
+                tab.text = getString(TAB_TITLES[position])
+            }.attach()
+        }
+        supportActionBar?.elevation = 0f
     }
-    private fun setUserDetailData(userDetail: UserDetailsResponse){
-        binding.apply{
+
+    private fun setUserDetailData(userDetail: UserDetailsResponse) {
+        binding?.apply {
             tvDetailUsername.text = userDetail.login
             Glide.with(this@DetailUserActivity).load(userDetail.avatarUrl)
                 .into(imgDetailPhoto)
             tvFollower.text = getString(R.string.detail_followers, userDetail.followers.toString())
-            tvFollowing.text =  getString(R.string.detail_following, userDetail.following.toString())
+            tvFollowing.text = getString(R.string.detail_following, userDetail.following.toString())
             tvFullname.text = userDetail.name.toString()
-            tvRepositories.text =getString(R.string.detail_repositories,userDetail.publicRepos.toString())
-            if (userDetail.company == null){
+            tvRepositories.text =
+                getString(R.string.detail_repositories, userDetail.publicRepos.toString())
+            if (userDetail.company == null) {
                 tvCompany.text = getString(R.string.not_found)
-            }else{
-                tvCompany.text= userDetail.company.toString()
+            } else {
+                tvCompany.text = userDetail.company.toString()
             }
-            if (userDetail.location == null){
+            if (userDetail.location == null) {
                 tvLocation.text = getString(R.string.not_found)
-            }else{
-                tvLocation.text= userDetail.location.toString()
+            } else {
+                tvLocation.text = userDetail.location.toString()
             }
         }
     }
 
     private fun showErrorSnackBar(text: String) {
-        Snackbar.make(binding.root, getString(R.string.error_message)+ text, Snackbar.LENGTH_SHORT)
-            .setDuration(15000).apply {
-                val params = CoordinatorLayout.LayoutParams(CoordinatorLayout.LayoutParams.MATCH_PARENT, CoordinatorLayout.LayoutParams.WRAP_CONTENT )
-                params.setMargins(2, 0, 2, 8)
-                params.gravity = Gravity.BOTTOM
-                params.anchorGravity = Gravity.BOTTOM
+        binding?.let {
+            Snackbar.make(it.root, getString(R.string.error_message) + text, Snackbar.LENGTH_SHORT)
+                .setDuration(15000).apply {
+                    val params = CoordinatorLayout.LayoutParams(
+                        CoordinatorLayout.LayoutParams.MATCH_PARENT,
+                        CoordinatorLayout.LayoutParams.WRAP_CONTENT
+                    )
+                    params.setMargins(2, 0, 2, 8)
+                    params.gravity = Gravity.BOTTOM
+                    params.anchorGravity = Gravity.BOTTOM
 
-                view.layoutParams = params
-                show()
-            }
+                    view.layoutParams = params
+                    show()
+                }
+        }
     }
 
     private fun showLoading(isLoading: Boolean) {
         if (isLoading) {
-            binding.progressBarDetail.visibility = visibility(true)
+            binding?.progressBarDetail?.visibility = visibility(true)
         } else {
-            binding.progressBarDetail.visibility = visibility(false)
+            binding?.progressBarDetail?.visibility = visibility(false)
         }
     }
 

@@ -18,8 +18,8 @@ import retrofit2.Response
         private val _listUsers = MutableLiveData<List<ListUsersResponse>>()
         val listUsers: LiveData<List<ListUsersResponse>> = _listUsers
 
-        private val _totalCount = MutableLiveData<Int>()
-        val totalCount : LiveData<Int> = _totalCount
+        private val _totalCount = MutableLiveData<Int?>()
+        val totalCount : LiveData<Int?> = _totalCount
 
         private val _isLoading = MutableLiveData<Boolean>()
         val isLoading: LiveData<Boolean> = _isLoading
@@ -54,8 +54,8 @@ import retrofit2.Response
                 if (response.isSuccessful) {
                     val responseBody = response.body()
                     if (responseBody != null) {
-                        _listUsers.value = response.body()!!.items as List<ListUsersResponse>
-                        _totalCount.value = response.body()!!.totalCount!!
+                        _listUsers.value = response.body()?.items as List<ListUsersResponse>
+                        _totalCount.value = response.body()?.totalCount
                     }
                 } else {
                     _error.value = Event("Search User")
