@@ -43,7 +43,12 @@
     <string name="repositories">Repositories</string>
     <string name="not_found">Not Found</string>
     <string name="detail_repositories"> %s repositories</string>
-    <string name="success_search"> "Berhasi menampilkan %d data"</string>
+    <string name="success_search"> Berhasil menampilkan %d data</string>
     <string name="splash_screen_image">splash screen</string>
+    <string name="btn_fav">btn_fav</string>
+    <string name="success_add_favorite">Berhasil ditambahkan ke favorite</string>
+    <string name="removed_from_favorite">Dihapus dari favorite</string>
+    <string name="menu_favorite">menu favorite</string>
+    <string name="theme_changer">ganti tema</string>
 
 </resources>

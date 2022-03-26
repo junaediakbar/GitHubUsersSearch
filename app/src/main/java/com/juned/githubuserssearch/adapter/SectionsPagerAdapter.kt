@@ -7,6 +7,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.juned.githubuserssearch.view.FollowFragment
 
 class SectionsPagerAdapter(activity: AppCompatActivity, private val username: String) : FragmentStateAdapter(activity) {
+
     override fun getItemCount(): Int {
         return 2
     }

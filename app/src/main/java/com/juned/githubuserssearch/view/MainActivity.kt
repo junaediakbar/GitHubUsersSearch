@@ -6,10 +6,15 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
@@ -17,6 +22,7 @@ import com.juned.githubuserssearch.*
 import com.juned.githubuserssearch.adapter.UserAdapter
 import com.juned.githubuserssearch.api.ListUsersResponse
 import com.juned.githubuserssearch.databinding.ActivityMainBinding
+import com.juned.githubuserssearch.helper.SettingPreferences
 import com.juned.githubuserssearch.helper.visibility
 import com.juned.githubuserssearch.model.User
 import com.juned.githubuserssearch.viewmodel.MainViewModel
@@ -24,10 +30,14 @@ import com.juned.githubuserssearch.viewmodel.MainViewModel
 
 class MainActivity : AppCompatActivity() {
 
+    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
+
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding
 
-    private val mainViewModel by viewModels<MainViewModel>()
+    private val mainViewModel by viewModels<MainViewModel>{
+        MainViewModel.Factory(SettingPreferences.getInstance(dataStore))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +63,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        showRecyclerList()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -63,20 +72,42 @@ class MainActivity : AppCompatActivity() {
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
         val searchView = menu.findItem(R.id.search).actionView as SearchView
 
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
-        searchView.queryHint = resources.getString(R.string.search_hint)
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        searchView.apply {
+            maxWidth= Int.MAX_VALUE
+            setSearchableInfo(searchManager.getSearchableInfo(componentName))
+            queryHint = resources.getString(R.string.search_hint)
+            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
-            override fun onQueryTextSubmit(query: String): Boolean {
-                Toast.makeText(this@MainActivity, "Mencari \"$query\"...", Toast.LENGTH_SHORT).show()
-                searchView.clearFocus()
-                mainViewModel.searchUsers(query)
-                return true
+                override fun onQueryTextSubmit(query: String): Boolean {
+                    Toast.makeText(this@MainActivity, "Mencari \"$query\"...", Toast.LENGTH_SHORT).show()
+                    searchView.clearFocus()
+                    mainViewModel.searchUsers(query)
+                    return true
+                }
+                override fun onQueryTextChange(newText: String): Boolean {
+                    return false
+                }
+            })
+        }
+
+
+        val menuTheme = menu.findItem(R.id.theme_changer)
+
+        mainViewModel.getThemeSettings().observe(this@MainActivity) {
+            if (it) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                menuTheme.apply {
+                    isChecked = true
+                    setIcon(R.drawable.ic_baseline_nights_24)
+                }
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                menuTheme.apply {
+                    isChecked = false
+                    setIcon(R.drawable.ic_baseline_nights_off_24)
+                }
             }
-            override fun onQueryTextChange(newText: String): Boolean {
-                return false
-            }
-        })
+        }
         return true
     }
 
@@ -94,10 +125,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setUsersData(users: List<ListUsersResponse>) {
+    private fun setUsersData(users: List<ListUsersResponse?>?) {
         val listUser = ArrayList<User>()
-        for(user in users){
-            listUser.add(User(login = user.login,avatarUrl = user.avatarUrl))
+        if (users != null) {
+            for(user in users){
+                if (user?.login !== null && user.avatarUrl !== null) {
+                    listUser.add(User(user.login, user.avatarUrl))
+                }
+            }
         }
         val adapter = UserAdapter(listUser)
         binding?.rvUser?.adapter = adapter
@@ -130,6 +165,22 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId) {
+
+            R.id.theme_changer -> {
+                mainViewModel.saveThemeSetting(!item.isChecked)
+                true
+            }
+
+            R.id.favorite -> {
+                startActivity(Intent(this, FavoriteUserActivity::class.java))
+                true
+            }
+
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
     companion object
 
 }

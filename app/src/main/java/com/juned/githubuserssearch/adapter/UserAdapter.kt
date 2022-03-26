@@ -32,7 +32,7 @@ class UserAdapter(private val userList: ArrayList<User>) : RecyclerView.Adapter<
     override fun onBindViewHolder(holder: UserHolder, position: Int) {
         val userData: User = userList[position]
         holder.apply {
-            tvUsername.text = userData.login
+            tvUsername.text = userData.username
             imgPhoto.setOnClickListener { onItemClickCallback?.onItemClicked(userList[holder.adapterPosition]) }
             Glide.with(holder.imgPhoto.context)
                 .load(userData.avatarUrl)

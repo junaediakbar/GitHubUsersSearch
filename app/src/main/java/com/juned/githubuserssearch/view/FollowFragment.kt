@@ -73,15 +73,16 @@ class FollowFragment : Fragment() {
             }
         }
     }
+
     private fun showErrorSnackBar(text: String) {
         binding?.root?.let {
-            Snackbar.make(it, getString(R.string.error_message)+ text, Snackbar.LENGTH_SHORT)
+            Snackbar.make(it, getString(R.string.error_message) + text, Snackbar.LENGTH_SHORT)
                 .setAction(R.string.try_again) {
                     val sectionIndex = arguments?.getInt(ARG_SECTION_INDEX) as Int
                     val username = arguments?.getString(ARG_USERNAME) as String
-                    if(sectionIndex == 0){
+                    if (sectionIndex == 0) {
                         followViewModel.getFollowersData(username)
-                    }else{
+                    } else {
                         followViewModel.getFollowingData(username)
                     }
                 }.setDuration(10000)
@@ -91,8 +92,10 @@ class FollowFragment : Fragment() {
 
     private fun setUsersData(users: List<ListUsersResponse>) {
         val listUser = ArrayList<User>()
-        for(user in users){
-            listUser.add(User(user.login, user.avatarUrl))
+        for (user in users) {
+            if (user.login !== null && user.avatarUrl !== null) {
+                listUser.add(User(user.login, user.avatarUrl))
+            }
         }
         binding?.apply {
             if (users.count() == 0) {
@@ -118,6 +121,6 @@ class FollowFragment : Fragment() {
 
     companion object {
         const val ARG_USERNAME = "username"
-        const val ARG_SECTION_INDEX= "section_index"
+        const val ARG_SECTION_INDEX = "section_index"
     }
 }

@@ -2,6 +2,8 @@ package com.juned.githubuserssearch.view
 
 import android.os.Bundle
 import android.view.Gravity
+import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
@@ -22,7 +24,13 @@ class DetailUserActivity : AppCompatActivity() {
     private var _binding: ActivityDetailUserBinding? = null
     private val binding get() = _binding
 
-    private val detailUserViewModel by viewModels<DetailUserViewModel>()
+    private val detailUserViewModel by viewModels<DetailUserViewModel> {
+        DetailUserViewModel.Factory(
+            intent.getParcelableExtra<User>(EXTRA_USER)?.username ?: "",
+            application
+        )
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +40,7 @@ class DetailUserActivity : AppCompatActivity() {
         val user = intent.getParcelableExtra<User>(EXTRA_USER) as User
 
         detailUserViewModel.apply {
-            getUserDetails(user.login.toString())
+            getUserDetails(user.username)
 
             userDetails.observe(this@DetailUserActivity) { user ->
                 setUserDetailData(user)
@@ -47,10 +55,29 @@ class DetailUserActivity : AppCompatActivity() {
                     showErrorSnackBar(text)
                 }
             }
+
+            isFavorite.observe(this@DetailUserActivity) {
+                binding?.apply {
+                    btnFav.visibility = visibility(!it)
+                    btnUnfav.visibility = visibility(it)
+                }
+            }
+
+        }
+
+        binding?.apply {
+            btnFav.setOnClickListener {
+                detailUserViewModel.setFavorite(user, true)
+                Toast.makeText(this@DetailUserActivity, getString(R.string.success_add_favorite), Toast.LENGTH_SHORT).show()
+            }
+            btnUnfav.setOnClickListener {
+                detailUserViewModel.setFavorite(user, false)
+                Toast.makeText(this@DetailUserActivity, getString(R.string.removed_from_favorite), Toast.LENGTH_SHORT).show()
+            }
         }
 
         val viewPager = binding?.followViewPager
-        viewPager?.adapter = SectionsPagerAdapter(this@DetailUserActivity, user.login.toString())
+        viewPager?.adapter = SectionsPagerAdapter(this@DetailUserActivity, user.username)
 
         val tabs = binding?.tabs
         if (tabs != null && viewPager != null) {
@@ -59,6 +86,17 @@ class DetailUserActivity : AppCompatActivity() {
             }.attach()
         }
         supportActionBar?.elevation = 0f
+
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId) {
+            android.R.id.home -> {
+                finish()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private fun setUserDetailData(userDetail: UserDetailsResponse) {
@@ -68,7 +106,6 @@ class DetailUserActivity : AppCompatActivity() {
                 .into(imgDetailPhoto)
             tvFollower.text = getString(R.string.detail_followers, userDetail.followers.toString())
             tvFollowing.text = getString(R.string.detail_following, userDetail.following.toString())
-            tvFullname.text = userDetail.name.toString()
             tvRepositories.text =
                 getString(R.string.detail_repositories, userDetail.publicRepos.toString())
             if (userDetail.company == null) {
@@ -80,6 +117,11 @@ class DetailUserActivity : AppCompatActivity() {
                 tvLocation.text = getString(R.string.not_found)
             } else {
                 tvLocation.text = userDetail.location.toString()
+            }
+            if (userDetail.name == null) {
+                tvFullname.text = getString(R.string.not_found)
+            } else {
+                tvFullname.text = userDetail.name.toString()
             }
         }
     }
