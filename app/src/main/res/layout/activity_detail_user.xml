@@ -167,7 +167,7 @@
             android:minHeight="48dp"
             app:layout_constraintBottom_toTopOf="@+id/tabs"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_favorite_selected"
+            app:srcCompat="@drawable/ic_favorite_unselected"
             tools:ignore="DuplicateClickableBoundsCheck,DuplicateClickableBoundsCheck,DuplicateSpeakableTextCheck,DuplicateSpeakableTextCheck" />
 
         <ImageButton
@@ -183,7 +183,7 @@
             android:visibility="invisible"
             app:layout_constraintBottom_toTopOf="@+id/tabs"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_favorite_unselected"
+            app:srcCompat="@drawable/ic_favorite_selected"
 
             tools:ignore="ImageContrastCheck,DuplicateSpeakableTextCheck,DuplicateSpeakableTextCheck" />
 
