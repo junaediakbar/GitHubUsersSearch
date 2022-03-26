@@ -5,6 +5,9 @@ plugins {
     id 'kotlin-kapt'
 }
 
+def localProperties = new Properties()
+localProperties.load(new FileInputStream(rootProject.file("local.properties")))
+
 android {
     compileSdk 31
 
@@ -16,7 +19,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "KEY", '"token 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"')
+        buildConfigField("String", "API_KEY", localProperties["api_key"])
 
     }
 
