@@ -16,7 +16,9 @@
             android:exported="false" />
         <activity
             android:name=".view.SplashScreenActivity"
-            android:exported="true">
+            android:exported="true"
+            android:configChanges="uiMode"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

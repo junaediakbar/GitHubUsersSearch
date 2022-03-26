@@ -15,7 +15,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class DetailUserViewModel(private val username: String, application: Application) : ViewModel() {
+class DetailUserViewModel(username: String, application: Application) : ViewModel() {
 
     private val _userDetails = MutableLiveData<UserDetailsResponse>()
     val userDetails: LiveData<UserDetailsResponse> = _userDetails

@@ -81,7 +81,7 @@ class MainViewModel(private val pref: SettingPreferences) : ViewModel() {
     }
 
     @Suppress("UNCHECKED_CAST")
-    class Factory(private val pref: SettingPreferences) : ViewModelProvider.Factory {
+    class Factory(private val pref: SettingPreferences) : ViewModelProvider.NewInstanceFactory() {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return MainViewModel(pref) as T
         }
@@ -91,4 +91,5 @@ class MainViewModel(private val pref: SettingPreferences) : ViewModel() {
         private const val TAG = "MainViewModel"
         const val emptyQuery = "\"\""
     }
+
 }

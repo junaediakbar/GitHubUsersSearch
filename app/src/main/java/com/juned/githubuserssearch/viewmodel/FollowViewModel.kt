@@ -13,6 +13,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class FollowViewModel : ViewModel() {
+
     private val _listUsers = MutableLiveData<List<ListUsersResponse>>()
     val listUsers: LiveData<List<ListUsersResponse>> = _listUsers
 

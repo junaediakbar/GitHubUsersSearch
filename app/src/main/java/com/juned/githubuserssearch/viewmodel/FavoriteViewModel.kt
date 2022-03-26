@@ -11,6 +11,7 @@ class FavoriteViewModel(application: Application) : ViewModel() {
 
     fun getFavorites() = userRepository.getAllFavoriteUsers()
 
+    @Suppress("UNCHECKED_CAST")
     class Factory(private val application: Application) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return FavoriteViewModel(application) as T
