@@ -59,7 +59,6 @@ class FollowFragment : Fragment() {
         }
 
         followViewModel.apply {
-
             isLoading.observe(this@FollowFragment) {
                 showLoading(it)
             }

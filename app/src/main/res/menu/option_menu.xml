@@ -9,9 +9,8 @@
         app:showAsAction="collapseActionView|always" />
     <item
         android:id="@+id/favorite"
-        android:icon="@drawable/ic_favorite_selected"
+        android:icon="@drawable/ic_menu_favorite"
         android:title="@string/menu_favorite"
-        android:iconTint="?attr/colorSecondary"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/theme_changer"
