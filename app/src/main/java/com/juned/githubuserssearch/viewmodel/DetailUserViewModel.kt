@@ -44,6 +44,7 @@ class DetailUserViewModel(username: String, application: Application) : ViewMode
         val client = ApiConfig.getApiService().getUserDetail(username)
         client?.enqueue(createResponseCallback() )
     }
+
     private fun createResponseCallback() =  object : Callback<UserDetailsResponse> {
         override fun onResponse(
             call: Call<UserDetailsResponse>,
@@ -65,13 +66,15 @@ class DetailUserViewModel(username: String, application: Application) : ViewMode
         }
     }
 
-    companion object {
-        private const val TAG = "DetailUserViewModel"
-    }
     @Suppress("UNCHECKED_CAST")
     class Factory(private val username: String, private val application: Application) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return DetailUserViewModel(username, application) as T
         }
     }
+
+    companion object {
+        private const val TAG = "DetailUserViewModel"
+    }
+
 }

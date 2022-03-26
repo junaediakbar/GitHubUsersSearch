@@ -6,7 +6,6 @@ import androidx.room.Room.databaseBuilder
 import androidx.room.RoomDatabase
 import com.juned.githubuserssearch.model.User
 
-
 @Database(entities = [User::class], version = 1)
 abstract class FavoriteUserRoomDatabase : RoomDatabase() {
 

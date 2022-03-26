@@ -1,15 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <style name="MtButtonStyle"
-        parent="Widget.MaterialComponents.Button">
-        <item name="materialThemeOverlay">@style/MyButtonThemeOverlay</item>
-    </style>
-    <style name="MyButtonThemeOverlay">
-        <item name="colorPrimary">@color/dark_grey_200</item>
-        <item name="colorOnSurface">@color/dark_grey_200</item>
-    </style>
-    <style name="ShapeAppearanceOverlay.MyApp.Button.Rounded" parent="">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">50%</item>
-    </style>
-</resources>
+<resources></resources>

@@ -107,9 +107,9 @@ class FollowFragment : Fragment() {
 
     private fun showLoading(isLoading: Boolean) {
         if (isLoading) {
-            binding?.progressBarFollowers?.visibility = visibility(true)
+            binding?.progressBarFollow?.visibility = visibility(true)
         } else {
-            binding?.progressBarFollowers?.visibility = visibility(false)
+            binding?.progressBarFollow?.visibility = visibility(false)
         }
     }
 

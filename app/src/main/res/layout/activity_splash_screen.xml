@@ -4,19 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:backgroundTint="@color/dark_grey_200"
+    android:background="@color/dark_grey"
+    android:backgroundTint="@color/dark_grey"
 
     tools:context=".view.SplashScreenActivity"
     tools:ignore="Overdraw">
 
     <ImageView
-        android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:contentDescription="@string/splash_screen_image"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="@string/splash_screen_image"
         app:srcCompat="@drawable/splashscreen" />
 </androidx.constraintlayout.widget.ConstraintLayout>

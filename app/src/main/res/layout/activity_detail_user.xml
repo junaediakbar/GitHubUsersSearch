@@ -12,7 +12,7 @@
         android:layout_height="wrap_content">
 
         <ProgressBar
-            android:id="@+id/progressBarDetail"
+            android:id="@+id/progress_bar_detail"
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -156,7 +156,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <ImageButton
-            android:id="@+id/btn_unfav"
+            android:id="@+id/btn_fav"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"
@@ -171,7 +171,7 @@
             tools:ignore="DuplicateClickableBoundsCheck,DuplicateClickableBoundsCheck,DuplicateSpeakableTextCheck,DuplicateSpeakableTextCheck" />
 
         <ImageButton
-            android:id="@+id/btn_fav"
+            android:id="@+id/btn_unfav"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"

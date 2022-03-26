@@ -23,4 +23,5 @@ interface ApiService {
     @Headers("Authorization:" + BuildConfig.API_KEY)
     @GET("users/{username}/followers")
     fun getFollowersUser(@Path("username") username:String):Call<List<ListUsersResponse>>?
+
 }
